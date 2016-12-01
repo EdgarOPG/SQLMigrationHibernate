@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Employee.findByPhoneNumber", query = "SELECT e FROM Employee e WHERE e.phoneNumber = :phoneNumber"),
     @NamedQuery(name = "Employee.findByHireDate", query = "SELECT e FROM Employee e WHERE e.hireDate = :hireDate"),
     @NamedQuery(name = "Employee.findBySalary", query = "SELECT e FROM Employee e WHERE e.salary = :salary"),
-    @NamedQuery(name = "Employee.findByCommissionPct", query = "SELECT e FROM Employee e WHERE e.commissionPct = :commissionPct")})
+    @NamedQuery(name = "Employee.findByCommissionPct", query = "SELECT e FROM Employee e WHERE e.commissionPct = :commissionPct"),
+    @NamedQuery(name = "Employee.findByManagerId", query = "SELECT e FROM Employee e WHERE e.managerId = :managerId")})
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,14 +68,11 @@ public class Employee implements Serializable {
     private BigDecimal salary;
     @Column(name = "COMMISSION_PCT")
     private BigDecimal commissionPct;
+    @Column(name = "MANAGER_ID")
+    private Integer managerId;
     @JoinColumn(name = "DEPARTMENT_ID", referencedColumnName = "DEPARTMENT_ID")
     @ManyToOne
     private Department departmentId;
-    @OneToMany(mappedBy = "managerId")
-    private Collection<Employee> employeeCollection;
-    @JoinColumn(name = "MANAGER_ID", referencedColumnName = "EMPLOYEE_ID")
-    @ManyToOne
-    private Employee managerId;
     @JoinColumn(name = "JOB_ID", referencedColumnName = "JOB_ID")
     @ManyToOne(optional = false)
     private Job jobId;
@@ -159,29 +157,20 @@ public class Employee implements Serializable {
         this.commissionPct = commissionPct;
     }
 
+    public Integer getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
+    }
+
     public Department getDepartmentId() {
         return departmentId;
     }
 
     public void setDepartmentId(Department departmentId) {
         this.departmentId = departmentId;
-    }
-
-    @XmlTransient
-    public Collection<Employee> getEmployeeCollection() {
-        return employeeCollection;
-    }
-
-    public void setEmployeeCollection(Collection<Employee> employeeCollection) {
-        this.employeeCollection = employeeCollection;
-    }
-
-    public Employee getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Employee managerId) {
-        this.managerId = managerId;
     }
 
     public Job getJobId() {

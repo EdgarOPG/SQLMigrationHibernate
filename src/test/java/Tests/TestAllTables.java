@@ -14,6 +14,8 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import mx.com.uach.sqlmigrationhibernate.entidades.Country;
 import mx.com.uach.sqlmigrationhibernate.entidades.Department;
+import mx.com.uach.sqlmigrationhibernate.entidades.Employee;
+import mx.com.uach.sqlmigrationhibernate.entidades.Job;
 import mx.com.uach.sqlmigrationhibernate.entidades.Location;
 import mx.com.uach.sqlmigrationhibernate.entidades.Region;
 import org.junit.After;
@@ -126,7 +128,7 @@ public class TestAllTables {
             emSqlServer.getTransaction().begin();        
             emSqlServer.persist(location);
             emSqlServer.getTransaction().commit();         
-        }        
+        }           
             //  Operacion SELECT *
         emOracle = emfOracle.createEntityManager();
         Query queryDepartments = emOracle.createNamedQuery("Department.findAll");
@@ -144,6 +146,43 @@ public class TestAllTables {
             emSqlServer.getTransaction().begin();        
             emSqlServer.persist(department);
             emSqlServer.getTransaction().commit();         
-        }        
+        }                
+            //  Operacion SELECT *
+        emOracle = emfOracle.createEntityManager();
+        Query queryJobs = emOracle.createNamedQuery("Job.findAll");
+        List<Job> jobs = queryJobs.getResultList();
+        List<Job> PersistJobs = new ArrayList<>();
+        for (Job employee : jobs) {
+            PersistJobs.add(employee);
+        }
+        emOracle.close();
+        for (Job employee : PersistJobs) {
+            System.out.println(employee.toString());
+        }
+        
+        for (Job job : PersistJobs) {
+            emSqlServer.getTransaction().begin();        
+            emSqlServer.persist(job);
+            emSqlServer.getTransaction().commit();         
+        }     
+            //  Operacion SELECT *
+        emOracle = emfOracle.createEntityManager();
+        Query queryEmployees = emOracle.createNamedQuery("Employee.findAll");
+        List<Employee> employees = queryEmployees.getResultList();
+        List<Employee> PersistEmployees = new ArrayList<>();
+        for (Employee employee : employees) {
+            PersistEmployees.add(employee);
+        }
+        emOracle.close();
+        for (Employee employee : PersistEmployees) {
+            System.out.println(employee.toString());
+        }
+        
+        for (Employee employee : PersistEmployees) {
+            emSqlServer.getTransaction().begin();        
+            emSqlServer.persist(employee);
+            emSqlServer.getTransaction().commit();         
+        }             
+        
     }
 }
