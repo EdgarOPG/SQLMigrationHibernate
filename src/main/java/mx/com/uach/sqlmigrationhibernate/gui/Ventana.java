@@ -5,9 +5,18 @@
  */
 package mx.com.uach.sqlmigrationhibernate.gui;
 
+import java.awt.Cursor;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
 
-public class Ventana extends javax.swing.JFrame {
+    public class Ventana extends javax.swing.JFrame implements ActionListener, 
+                                        PropertyChangeListener{
 
     /**
      * Creates new form Ventana
@@ -19,12 +28,52 @@ public class Ventana extends javax.swing.JFrame {
 //        for (String user : userList) {
 //            cmbUsers.addItem(user);
 //        }        
-        
+        txtOk.setActionCommand("start");
+        txtOk.addActionListener(this);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        txtOk.setEnabled(false);
+        PorcentageBar task = new PorcentageBar();
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        task.addPropertyChangeListener(null);
+        task.execute();
     }
     
- 
-    
-            PersistenceQueries p = new PersistenceQueries();
+
+    class PorcentageBar extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            int progress = 0;
+            setProgress(0);
+            p.persist();
+
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            Toolkit.getDefaultToolkit().beep();
+            txtOk.setEnabled(true);
+            setCursor(null);
+            JOptionPane.showMessageDialog(rootPane, "Migracion completa");
+         
+            
+        }
+        
+        public void propertyChange(PropertyChangeEvent evt) {
+        if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            progressBar.setValue(progress);
+        } 
+    }
+
+    }
+
+    PersistenceQueries p = new PersistenceQueries();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,7 +86,7 @@ public class Ventana extends javax.swing.JFrame {
 
         txtOk = new javax.swing.JButton();
         cmbUsers = new javax.swing.JComboBox();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        progressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,7 +116,7 @@ public class Ventana extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmbUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
@@ -82,7 +131,7 @@ public class Ventana extends javax.swing.JFrame {
                     .addComponent(cmbUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtOk))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
 
@@ -97,8 +146,15 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbUsersItemStateChanged
 
     private void txtOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOkActionPerformed
-        p.persist();
+
     }//GEN-LAST:event_txtOkActionPerformed
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            progressBar.setValue(progress);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -138,7 +194,7 @@ public class Ventana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cmbUsers;
-    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JButton txtOk;
     // End of variables declaration//GEN-END:variables
 }
