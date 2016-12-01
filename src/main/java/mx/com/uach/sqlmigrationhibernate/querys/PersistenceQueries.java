@@ -1,10 +1,9 @@
-package Tests;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package mx.com.uach.sqlmigrationhibernate.querys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,42 +17,14 @@ import mx.com.uach.sqlmigrationhibernate.entidades.Employee;
 import mx.com.uach.sqlmigrationhibernate.entidades.Job;
 import mx.com.uach.sqlmigrationhibernate.entidades.Location;
 import mx.com.uach.sqlmigrationhibernate.entidades.Region;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  *
  * @author eopg9
  */
-public class TestAllTables {
-    
-    public TestAllTables() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
+public class PersistenceQueries {
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    @Test
-    public void hello() {
+    public void persist() {
     //  Creacion del EntityManager Oracle
         EntityManagerFactory emfOracle = Persistence.createEntityManagerFactory("oraclePU");
         EntityManager emOracle = emfOracle.createEntityManager();
@@ -61,20 +32,6 @@ public class TestAllTables {
     //  Creacion del EntityManager Oracle
         EntityManagerFactory emfSqlServer = Persistence.createEntityManagerFactory("sqlServerPU");
         EntityManager emSqlServer = emfSqlServer.createEntityManager();
-        
-//    //  Operacion SELECT * tables names
-//            Query qAllTablesNames = emOracle.createNamedQuery("AllAllTables.findByOwner").setParameter("owner", "HR");
-//        List<AllAllTables> tables = qAllTablesNames.getResultList();        
-//        for (AllAllTables table : tables) {
-//            System.out.println(table.getTableName());
-//        }
-//        
-//    //  Operacion SELECT * tables owners
-//            Query qAllTablesOwners = emOracle.createNamedQuery("AllAllTables.findByTablespaceName").setParameter("tablespaceName", "USERS");
-//        List<AllAllTables> tables2 = qAllTablesOwners.getResultList();        
-//        for (AllAllTables table2 : tables2) {
-//            System.out.println(table2.getOwner());
-//        }
 
     //  Operacion SELECT *
         Query queryRegion = emOracle.createNamedQuery("Region.findAll");
@@ -184,5 +141,5 @@ public class TestAllTables {
             emSqlServer.getTransaction().commit();         
         }             
         
-    }
+    }            
 }
