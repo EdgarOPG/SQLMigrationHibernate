@@ -25,15 +25,24 @@ import mx.com.uach.sqlmigrationhibernate.entidades.Region;
 public class PersistenceQueries {
 
     public void persist() {
-    //  Creacion del EntityManager Oracle
+        /**
+        * Creacion del EntityManager Oracle
+        * 
+        */
         EntityManagerFactory emfOracle = Persistence.createEntityManagerFactory("oraclePU");
         EntityManager emOracle = emfOracle.createEntityManager();
         
-    //  Creacion del EntityManager Oracle
+        /**
+        * Creacion del EntityManager slqServer
+        * 
+        */
         EntityManagerFactory emfSqlServer = Persistence.createEntityManagerFactory("sqlServerPU");
         EntityManager emSqlServer = emfSqlServer.createEntityManager();
 
-    //  Operacion SELECT *
+        /**
+        * Operacion SELECT * Regions
+        * 
+        */
         Query queryRegion = emOracle.createNamedQuery("Region.findAll");
         List<Region> regions = queryRegion.getResultList();
         List<Region> PersistRegions = new ArrayList<>();
@@ -50,7 +59,11 @@ public class PersistenceQueries {
             emSqlServer.persist(region);
             emSqlServer.getTransaction().commit();         
         } 
-    //          Operacion SELECT *
+
+        /**
+        * Operacion SELECT * Country
+        * 
+        */        
         emOracle = emfOracle.createEntityManager();
         Query CountriesLocations = emOracle.createNamedQuery("Country.findAll");
         List<Country> countries = CountriesLocations.getResultList();
@@ -68,7 +81,11 @@ public class PersistenceQueries {
             emSqlServer.persist(countrie);
             emSqlServer.getTransaction().commit();         
         }        
-            //  Operacion SELECT *
+
+        /**
+        * Operacion SELECT * Locations
+        * 
+        */
         emOracle = emfOracle.createEntityManager();
         Query queryLocations = emOracle.createNamedQuery("Location.findAll");
         List<Location> locations = queryLocations.getResultList();
@@ -85,8 +102,12 @@ public class PersistenceQueries {
             emSqlServer.getTransaction().begin();        
             emSqlServer.persist(location);
             emSqlServer.getTransaction().commit();         
-        }           
-            //  Operacion SELECT *
+        } 
+        
+        /**
+        * Operacion SELECT * Departments
+        * 
+        */
         emOracle = emfOracle.createEntityManager();
         Query queryDepartments = emOracle.createNamedQuery("Department.findAll");
         List<Department> departments = queryDepartments.getResultList();
@@ -104,7 +125,11 @@ public class PersistenceQueries {
             emSqlServer.persist(department);
             emSqlServer.getTransaction().commit();         
         }                
-            //  Operacion SELECT *
+
+        /**
+        * Operacion SELECT * Jobs
+        * 
+        */
         emOracle = emfOracle.createEntityManager();
         Query queryJobs = emOracle.createNamedQuery("Job.findAll");
         List<Job> jobs = queryJobs.getResultList();
@@ -122,7 +147,11 @@ public class PersistenceQueries {
             emSqlServer.persist(job);
             emSqlServer.getTransaction().commit();         
         }     
-            //  Operacion SELECT *
+
+        /**
+        * Operacion SELECT * Employees
+        * 
+        */        
         emOracle = emfOracle.createEntityManager();
         Query queryEmployees = emOracle.createNamedQuery("Employee.findAll");
         List<Employee> employees = queryEmployees.getResultList();

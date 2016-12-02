@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
@@ -24,10 +25,8 @@ import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
 //    Query q = new Query();
     public Ventana() {
         initComponents();
-//        List<String> userList = q.getUsers();
-//        for (String user : userList) {
-//            cmbUsers.addItem(user);
-//        }        
+ 
+        this.setLocationRelativeTo(null);
         txtOk.setActionCommand("start");
         txtOk.addActionListener(this);
 
@@ -40,6 +39,7 @@ import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         task.addPropertyChangeListener(null);
         task.execute();
+        progressBar.setIndeterminate(true);
     }
     
 
@@ -50,7 +50,6 @@ import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
             int progress = 0;
             setProgress(0);
             p.persist();
-
             return null;
         }
 
@@ -59,17 +58,9 @@ import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
             Toolkit.getDefaultToolkit().beep();
             txtOk.setEnabled(true);
             setCursor(null);
+            progressBar.setIndeterminate(false);
             JOptionPane.showMessageDialog(rootPane, "Migracion completa");
-         
-            
         }
-        
-        public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress" == evt.getPropertyName()) {
-            int progress = (Integer) evt.getNewValue();
-            progressBar.setValue(progress);
-        } 
-    }
 
     }
 
@@ -97,7 +88,7 @@ import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
             }
         });
 
-        cmbUsers.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "seleccionar" }));
+        cmbUsers.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "seleccionar", "HR" }));
         cmbUsers.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbUsersItemStateChanged(evt);
@@ -138,16 +129,17 @@ import mx.com.uach.sqlmigrationhibernate.querys.PersistenceQueries;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOkActionPerformed
+
+    }//GEN-LAST:event_txtOkActionPerformed
+
     private void cmbUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbUsersActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbUsersActionPerformed
 
     private void cmbUsersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbUsersItemStateChanged
+
     }//GEN-LAST:event_cmbUsersItemStateChanged
-
-    private void txtOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOkActionPerformed
-
-    }//GEN-LAST:event_txtOkActionPerformed
 
     public void propertyChange(PropertyChangeEvent evt) {
         if ("progress" == evt.getPropertyName()) {
